@@ -1,3 +1,7 @@
+*Below is the original README from the project before I forked it. I have
+modified the source to notify through a custom tool I made that notifies in the
+tmux statusbar. That file can currently [be found here](https://github.com/benekastah/osx-bootstrap/blob/master/home/bin/tmuxstatus)*
+
 Simple script for irssi to trigger Mac OS X 10.8's Notification Center
 ===
 

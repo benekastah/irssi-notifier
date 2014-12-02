@@ -50,7 +50,8 @@ $VERSION = "0.0";
 sub do_notifier {
   my ($server, $title, $data) = @_;
     $data =~ s/["';]//g;
-    system("terminal-notifier -message '$data' -title '$title' >> /dev/null 2>&1");
+    # system("terminal-notifier -message '$data' -title '$title' >> /dev/null 2>&1");
+    system("tmuxstatus -a '$title: $data' >> /dev/null 2>&1");
     return 1
 }
 
@@ -69,7 +70,9 @@ sub notifier_it {
       return 0 if $channel !~ /$channel_filter/;
     }
 
-    $title = $title . " " . $channel;
+    if ($channel) {
+      $title = $title . " " . $channel;
+    }
     do_notifier($server, $title, $data);
 }
 
@@ -120,7 +123,7 @@ sub notifier_privmsg {
     my ($target, $text) = split(/ :/, $data, 2);
     # only notify if we're permitting notification on privmsg
     if (Irssi::settings_get_str('notifier_on_privmsg') == 1) {
-        notifier_it($server, $nick, $data, $target, $nick); 
+        notifier_it($server, $nick, $data, $target, $nick);
     }
   Irssi::signal_continue($server, $data, $nick, $host);
 }
@@ -132,8 +135,8 @@ Irssi::settings_add_str('misc', 'notifier_on_nick', 1);       # true
 Irssi::settings_add_str('misc', 'notifier_on_privmsg', 0);    # false
 Irssi::signal_add('message public', 'notifier_message');
 Irssi::signal_add('message private', 'notifier_message');
-Irssi::signal_add('message own_public', 'notifier_message');
-Irssi::signal_add('message own_private', 'notifier_message');
+# Irssi::signal_add('message own_public', 'notifier_message');
+# Irssi::signal_add('message own_private', 'notifier_message');
 Irssi::signal_add('message join', 'notifier_join');
 Irssi::signal_add('message part', 'notifier_part');
 Irssi::signal_add('message quit', 'notifier_quit');
